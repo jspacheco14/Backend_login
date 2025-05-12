@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login y Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Residuos</h1>
+        <form method="POST">
+    <input type="text" name="cliente" placeholder="Usuario" required>
+    <input type="password" name="contraseña" placeholder="Contraseña" required>
+    <select name="rol" required>
+        <option value="usuario">Usuario</option>
+        <option value="admin">Administrador</option>
+    </select>
+    <button type="submit" name="accion" value="iniciar_sesion">Iniciar Sesión</button>
+    <button type="submit" name="accion" value="registrar">Registrarse</button>
+</form>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
