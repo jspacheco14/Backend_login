@@ -16,7 +16,7 @@ def create_waste_log(waste_log: WasteLogCreate, db: Session = Depends(get_db)):
 
 @router.get("/waste", status_code=200)
 def get_waste_logs(db: Session = Depends(get_db)):
-    return db.query(WasteInferenceLog).all()
+    return [ log.to_dict() for log in db.query(WasteInferenceLog).all()]
 
 @router.post("/category", status_code=201)
 def create_waste_category(category: WasteCategoryCreate, db: Session = Depends(get_db)):
