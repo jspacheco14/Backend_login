@@ -18,3 +18,8 @@ class WasteLogCreate(BaseModel):
 class WasteCategoryCreate(BaseModel):
     name: str
     description: str
+
+class CreateUserRequest(BaseModel):
+    username: str
+    password: str
+    role: str

@@ -9,13 +9,26 @@ class UserRole(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, unique=True, index=True)
 
+    user = relationship("User", back_populates="role")
+
 class User(Base):
     __tablename__ = "users"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     username = Column(String, unique=True, index=True)
     password = Column(String)
     role_id = Column(UUID(as_uuid=True), ForeignKey("user_roles.id"))
-    role = relationship("UserRole")
+
+    role: Mapped["UserRole"]= relationship("UserRole", back_populates="user")
+
+    def get_token_data(self):
+        return {
+            "id": str(self.id),
+            "username": self.username,
+            "role": {
+                "id": str(self.role.id),
+                "name": self.role.name
+            }
+        }
 
 class WasteCategory(Base):
     __tablename__ = "waste_categories"
