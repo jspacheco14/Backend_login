@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import WasteInferenceLog, WasteCategory
@@ -16,7 +17,7 @@ def create_waste_log(waste_log: WasteLogCreate, db: Session = Depends(get_db)):
 
 @router.get("/waste", status_code=200)
 def get_waste_logs(db: Session = Depends(get_db)):
-    return [ log.to_dict() for log in db.query(WasteInferenceLog).all()]
+    return [ log.to_dict() for log in db.query(WasteInferenceLog).order_by(desc(WasteInferenceLog.timestamp)).all()]
 
 @router.post("/category", status_code=201)
 def create_waste_category(category: WasteCategoryCreate, db: Session = Depends(get_db)):

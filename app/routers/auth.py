@@ -42,3 +42,19 @@ def create_user(
     db.commit()
     db.refresh(new_user)
     return {"message": "User created", "id": str(new_user.id)}
+
+@router.get("/list-users")
+def list_users(current_user: User = Depends(get_current_user)):
+    if current_user.role.name != "admin":
+        raise HTTPException(status_code=403, detail="Only admins can view users")
+
+    db = SessionLocal()
+    users = db.query(User).all()
+    return [
+        {
+            "id": str(user.id),
+            "username": user.username,
+            "role": user.role.name
+        }
+        for user in users
+    ]
